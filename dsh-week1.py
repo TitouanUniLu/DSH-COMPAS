@@ -13,8 +13,8 @@ for column in df.columns:
         plt.bar(value_counts.index, value_counts.values)
         plt.xlabel(column)
         plt.ylabel('Frequency')
-        plt.title(f'Bar Chart of {column}')
-        plt.savefig(f'Bar Chart of {column}')
+        plt.savefig(f'{column}_bar_chart.png')
+        plt.close()
 
     else:
         # Count the occurrences of unique values in the column
@@ -24,10 +24,6 @@ for column in df.columns:
         plt.hist(df[column], bins=10)
         plt.xlabel(column)
         plt.ylabel('Frequency')
-        plt.title(f'Bar Chart of {column}')
-        plt.savefig(f'Bar Chart of {column}')
+        plt.savefig(f'{column}_histogram.png')
+        plt.close()
 
-
-
-
-    
