@@ -10,6 +10,7 @@ for column in df.columns:
         value_counts = df[column].value_counts()
         
         # Plot a bar chart of the frequency
+        plt.figure().set_figwidth(20)
         plt.bar(value_counts.index, value_counts.values)
         plt.xlabel(column)
         plt.ylabel('Frequency')
@@ -19,7 +20,7 @@ for column in df.columns:
     else:
         # Count the occurrences of unique values in the column
         value_counts = df[column].value_counts()
-        
+        plt.figure().set_figwidth(20)
         # Plot a histogram of the frequency
         plt.hist(df[column], bins=10)
         plt.xlabel(column)
