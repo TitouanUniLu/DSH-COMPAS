@@ -19,7 +19,7 @@ df = pd.read_csv('compas-scores-re_col.csv')
 # print('First 5 rows of the updated CSV file
 
 
-### One-Hot Encoding 
+# ## One-Hot Encoding 
 # # Define the columns for which to perform one-hot encoding
 # cols_to_encode = ['Agency_Text', 'Sex_Code_Text', 'Ethnic_Code_Text', "Language", "LegalStatus", 
 #                     "CustodyStatus", "MaritalStatus"]
@@ -32,5 +32,5 @@ df = pd.read_csv('compas-scores-re_col.csv')
 # print(df_encoded.head())
 
 # # Export the updated DataFrame to a new CSV file
-# df.to_csv('compas-scores-encoding.csv', index=False)
+# df_encoded.to_csv('compas-scores-encoding.csv', index=False)
 
