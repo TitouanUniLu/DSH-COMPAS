@@ -147,33 +147,31 @@ from sklearn.preprocessing import MinMaxScaler
 # plt.show()
 
 
-### Stack Bar Ethnicity X Risk Groups
-# load data from csv file
+# Load data from CSV file
 data = pd.read_csv('Old_Data_Sets/compas-scores-reduced.csv')
 
-# select relevant columns
+# Select relevant columns
 risk_and_race = data[['RecSupervisionLevelText', 'Ethnic_Code_Text']]
 
-# group data by risk level and race
+# Group data by risk level and race
 grouped_data = risk_and_race.groupby(['RecSupervisionLevelText', 'Ethnic_Code_Text']).size().reset_index(name='count')
 
-# pivot data to create stacked bar chart
+# Pivot data to create stacked bar chart
 pivot_data = grouped_data.pivot(index='RecSupervisionLevelText', columns='Ethnic_Code_Text', values='count')
 
-# set colors for each race category
+# Set colors for each race category
 colors = {"Caucasian": 'blue', "African-American": 'black', "Hispanic": "brown", "Other": "green", "Asian": "yellow", "Native American": 'red'}
 
-# create stacked bar chart
-ax = pivot_data.plot(kind='bar', stacked=True, color=colors.values(), figsize=(10, 6))
+# Create stacked bar chart
+ax = pivot_data.plot(kind='bar', stacked=True, color=[colors[key] for key in pivot_data.columns], figsize=(10, 6))
 
-# set labels and title
+# Set labels and title
 ax.set_xlabel('Recidivism Risk Level')
 ax.set_ylabel('Number of Cases')
 ax.set_title('Distribution of Race Categories by Recidivism Risk Level')
 
-# set legend with custom colors
-handles, labels = ax.get_legend_handles_labels()
-ax.legend(reversed(handles), reversed(colors.keys()), loc='upper left')
+# Set legend with custom colors
+ax.legend(pivot_data.columns, loc='upper left')
 
-# show plot
+# Show plot
 plt.show()
