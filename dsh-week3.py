@@ -147,34 +147,107 @@ from sklearn.preprocessing import MinMaxScaler
 # plt.show()
 
 
-# Load data from CSV file
+# # Load data from CSV file
+# data = pd.read_csv('Old_Data_Sets/compas-scores-reduced.csv')
+
+# #Keep only the rows where Scale_ID equals 8
+# data = data[data['Scale_ID'] == 8]
+
+# # Select relevant columns
+# risk_and_race = data[['RecSupervisionLevelText', 'Ethnic_Code_Text']]
+
+# # Group data by risk level and race
+# grouped_data = risk_and_race.groupby(['RecSupervisionLevelText', 'Ethnic_Code_Text']).size().reset_index(name='count')
+
+# # Pivot data to create stacked bar chart
+# pivot_data = grouped_data.pivot(index='RecSupervisionLevelText', columns='Ethnic_Code_Text', values='count')
+
+# # Set colors for each race category
+# colors = {"Caucasian": 'blue', "African-American": 'black', "Hispanic": "brown", "Other": "green", "Asian": "yellow", "Native American": 'red'}
+
+# # Create stacked bar chart
+# ax = pivot_data.plot(kind='bar', stacked=True, color=[colors[key] for key in pivot_data.columns], figsize=(10, 6))
+
+# # Set labels and title
+# ax.set_xlabel('Recidivism Risk Level')
+# ax.set_ylabel('Number of Cases')
+# ax.set_title('Distribution of Race Categories by Recidivism Risk Level')
+
+# # Set legend with custom colors
+# ax.legend(pivot_data.columns, loc='upper left')
+
+# # Show plot
+# plt.show()
+
+
+# ### Marital status
+# # load data from csv file
+# data = pd.read_csv('Old_Data_Sets/compas-scores-reduced.csv')
+
+# #Keep only the rows where Scale_ID equals 8
+# data = data[data['Scale_ID'] == 8]
+
+# # select relevant columns
+# past_crimes_and_marital_status = data[['MaritalStatus', 'DisplayText']]
+
+# # group data by marital status and past crimes
+# grouped_data = past_crimes_and_marital_status.groupby(['MaritalStatus', 'DisplayText']).size().reset_index(name='count')
+
+# # pivot data to create stacked bar chart
+# pivot_data = grouped_data.pivot(index='MaritalStatus', columns='DisplayText', values='count')
+
+# # set colors for each past crimes category
+# colors = {'Past Crimes': 'red'}
+
+# # create stacked bar chart
+# ax = pivot_data.plot(kind='bar', stacked=True, color=colors.values(), figsize=(12, 6))
+
+# # set labels and title
+# ax.set_xlabel('Marital Status')
+# ax.set_ylabel('Number of Cases')
+# ax.set_title('Distribution of Past Crimes by Marital Status')
+
+# # set legend with custom colors
+# handles, labels = ax.get_legend_handles_labels()
+# ax.legend(handles, colors.keys(), loc='upper right')
+
+# # show plot
+# plt.show()
+
+# load data from csv file
 data = pd.read_csv('Old_Data_Sets/compas-scores-reduced.csv')
 
-#Keep only the rows where Scale_ID equals 8
+# Keep only the rows where Scale_ID equals 8
 data = data[data['Scale_ID'] == 8]
 
-# Select relevant columns
-risk_and_race = data[['RecSupervisionLevelText', 'Ethnic_Code_Text']]
+# select relevant columns
+risk_and_marital_status = data[['RecSupervisionLevelText', 'MaritalStatus']]
 
-# Group data by risk level and race
-grouped_data = risk_and_race.groupby(['RecSupervisionLevelText', 'Ethnic_Code_Text']).size().reset_index(name='count')
+# group data by risk level and marital status
+grouped_data = risk_and_marital_status.groupby(['RecSupervisionLevelText', 'MaritalStatus']).size().reset_index(name='count')
 
-# Pivot data to create stacked bar chart
-pivot_data = grouped_data.pivot(index='RecSupervisionLevelText', columns='Ethnic_Code_Text', values='count')
+# pivot data to create stacked bar chart
+pivot_data = grouped_data.pivot(index='RecSupervisionLevelText', columns='MaritalStatus', values='count')
 
-# Set colors for each race category
-colors = {"Caucasian": 'blue', "African-American": 'black', "Hispanic": "brown", "Other": "green", "Asian": "yellow", "Native American": 'red'}
+# define a color scheme for each marital status category
+colors = {'Single': 'blue', 'Married': 'green', 'Divorced': 'purple', 'Separated': 'red', 'Widowed': 'gray', "Significant Other": 'yellow'}
 
-# Create stacked bar chart
-ax = pivot_data.plot(kind='bar', stacked=True, color=[colors[key] for key in pivot_data.columns], figsize=(10, 6))
+# create stacked bar chart
+ax = pivot_data.plot(kind='bar', stacked=True, color=[colors[key] for key in pivot_data.columns], figsize=(12,6))
 
-# Set labels and title
+# set labels and title
 ax.set_xlabel('Recidivism Risk Level')
 ax.set_ylabel('Number of Cases')
-ax.set_title('Distribution of Race Categories by Recidivism Risk Level')
+ax.set_title('Distribution of Marital Status by Recidivism Risk Level')
 
-# Set legend with custom colors
-ax.legend(pivot_data.columns, loc='upper left')
+# set legend with custom colors
+handles, labels = ax.get_legend_handles_labels()
+ax.legend(handles, colors.keys(), loc='upper right')
 
-# Show plot
+# show plot
 plt.show()
+
+
+
+
+
