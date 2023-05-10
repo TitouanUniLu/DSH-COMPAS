@@ -150,6 +150,9 @@ from sklearn.preprocessing import MinMaxScaler
 # Load data from CSV file
 data = pd.read_csv('Old_Data_Sets/compas-scores-reduced.csv')
 
+#Keep only the rows where Scale_ID equals 8
+data = data[data['Scale_ID'] == 8]
+
 # Select relevant columns
 risk_and_race = data[['RecSupervisionLevelText', 'Ethnic_Code_Text']]
 
