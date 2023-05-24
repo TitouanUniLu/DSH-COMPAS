@@ -11,3 +11,6 @@ https://docs.google.com/document/d/1cz96G4mMgETR2B1xc-WKsZFgl97aS9Kw4uvzyuH6ekg/
 
 WEEK 3 DOC:
 https://docs.google.com/document/d/1QU4RavTgEKoT9gTq1eTU9opNuEAQWkNuYALJRVYq3lE/edit?usp=sharing
+
+WEEK 4 DOC:
+https://docs.google.com/document/d/1ZtW-DEwq1yQL1ibCk_RopRxQXTYUaqIpGnWauygHjHY/edit?usp=sharing
