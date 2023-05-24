@@ -11,28 +11,61 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import reciprocal, uniform
+import numpy as np
 
 
 ''' LOGISTIC REGRESSION '''
 # Load the data
-def logRegression(df):
+def logRegression(df, search):
     # Define features and target
     features = df.iloc[: , 9:]
     target = df['RawScore'].apply(lambda x: 1 if x > 0.07 else 0) #if the raw score is medium or high give it one else 0
 
+    if search == True:
+        # Define the hyperparameter search space
+        param_grid = {
+            'C': uniform(loc=0, scale=10),
+            'penalty': ['l1', 'l2'],
+            'solver': ['liblinear', 'saga']
+        }
 
-    # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
+        # Split the data
+        X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
 
-    # Create a Logistic Regression model
-    model = LogisticRegression()
+        # Create a Logistic Regression model
+        model = LogisticRegression()
 
-    # Train the model
-    model.fit(X_train, y_train)
+        '''# Create a RandomizedSearchCV instance
+        random_search = GridSearchCV(model, param_grid, cv=3)'''
+        # Create a RandomizedSearchCV instance
+        random_search = RandomizedSearchCV(
+            estimator=model,
+            param_distributions=param_grid,
+            n_iter=1000,
+            cv=5,
+            random_state=42
+        )
 
-    # Predict the test set results
-    y_pred = model.predict(X_test)
-    print('Model accuracy score: {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
+        # Fit the RandomizedSearchCV instance to the data
+        random_search.fit(X_train, y_train)
+
+        # Get the best parameters and best score
+        best_params = random_search.best_params_
+        best_score = random_search.best_score_
+
+        print(best_params)
+        print(best_score)
+
+    else:
+        # Create a Logistic Regression model
+        model = LogisticRegression()
+
+        # Train the model
+        model.fit(X_train, y_train)
+
+        # Predict the test set results
+        y_pred = model.predict(X_test)
+        print('Model accuracy score: {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
 
 
 def supportVectorMachine(df, search):
@@ -87,5 +120,5 @@ def supportVectorMachine(df, search):
 
 
 df = pd.read_csv('compas-scores-recidivism.csv')
-logRegression(df)
-supportVectorMachine(df, False)
+logRegression(df, True)
+#supportVectorMachine(df, False)
