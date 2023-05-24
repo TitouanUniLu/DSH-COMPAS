@@ -20,20 +20,22 @@ def logRegression(df, search):
     # Define features and target
     features = df.iloc[: , 9:]
     target = df['RawScore'].apply(lambda x: 1 if x > 0.07 else 0) #if the raw score is medium or high give it one else 0
+    X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
 
     if search == True:
         # Define the hyperparameter search space
         param_grid = {
-            'C': uniform(loc=0, scale=10),
-            'penalty': ['l1', 'l2'],
-            'solver': ['liblinear', 'saga']
+            'C': np.logspace(-4, 4, 20),  # creates a range of 20 values evenly spaced on a log scale between 10^-4 and 10^4
+            'tol': reciprocal(0.0001, 0.1),
+            'penalty': ['l1', 'l2', 'elasticnet', 'none'],  # 'elasticnet' and 'none' are also valid options
+            'solver': ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'],
+            'l1_ratio': np.linspace(0, 1, 10)  # only used when penalty='elasticnet'
         }
 
-        # Split the data
-        X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
+        
 
         # Create a Logistic Regression model
-        model = LogisticRegression()
+        model = LogisticRegression(max_iter=100000)
 
         '''# Create a RandomizedSearchCV instance
         random_search = GridSearchCV(model, param_grid, cv=3)'''
@@ -58,7 +60,7 @@ def logRegression(df, search):
 
     else:
         # Create a Logistic Regression model
-        model = LogisticRegression()
+        model = LogisticRegression(solver='saga', penalty='l1', C=0.12328467394420634)
 
         # Train the model
         model.fit(X_train, y_train)
@@ -66,6 +68,13 @@ def logRegression(df, search):
         # Predict the test set results
         y_pred = model.predict(X_test)
         print('Model accuracy score: {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
+        cm = confusion_matrix(y_test, y_pred)
+        print("Confusion Matrix: \n", cm)
+
+        # Plot the confusion matrix
+        plot_confusion_matrix(model, X_test, y_test)
+        plt.show()
+
 
 
 def supportVectorMachine(df, search):
@@ -98,6 +107,7 @@ def supportVectorMachine(df, search):
 
         # Evaluate the model using Root Mean Squared Error (RMSE)
         print('Model accuracy score: {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
+        
 
     else:
         # Create a Support Vector Regression model
@@ -120,5 +130,5 @@ def supportVectorMachine(df, search):
 
 
 df = pd.read_csv('compas-scores-recidivism.csv')
-logRegression(df, True)
-#supportVectorMachine(df, False)
+#logRegression(df, False)
+supportVectorMachine(df, False)
