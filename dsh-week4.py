@@ -76,10 +76,10 @@ def supportVectorMachine(df, search):
 
         # Predict the test set results
         y_pred = model.predict(X_test)
-        print(y_pred)
-        # Evaluate the model using Root Mean Squared Error (RMSE)
+        
+        print('Model accuracy score: {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
 
 
 df = pd.read_csv('compas-scores-recidivism.csv')
 #logRegression(df)
-supportVectorMachine(df, True)
+supportVectorMachine(df, False)
