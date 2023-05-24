@@ -4,11 +4,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
-from sklearn.svm import SVR
+from sklearn import svm
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
+from sklearn.metrics import accuracy_score, confusion_matrix, plot_confusion_matrix
 from scipy.stats import reciprocal, uniform
 
 ''' LOGISTIC REGRESSION '''
@@ -37,20 +38,24 @@ def logRegression(df):
 def supportVectorMachine(df, search):
     # Define features and target
     features = df.iloc[: , 9:]
-    target = df['RawScore']
-
-    # SVM algorithms are not scale invariant, so it is highly recommended to scale your data
-    scaler = StandardScaler()
-    features_scaled = scaler.fit_transform(features)
+    target = df['RawScore'].apply(lambda x: 1 if x > 0.07 else 0) #if the raw score is medium or high give it one else 0
 
     # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(features_scaled, target, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
     
     #Code to use to find the best C and gamma values
     if search == True:
+        param_distributions = {
+            'C': uniform(loc=0, scale=10), 
+            'gamma': reciprocal(0.001, 0.1), 
+            'kernel': ['rbf', 'poly', 'sigmoid'],
+        }
+        # Create a SVC model
+        model = svm.SVC()
 
-        param_distributions = {"gamma": reciprocal(0.001, 0.1), "C": uniform(1, 10), "epsilon": uniform(0.01, 1.0)}
-        rnd_search_cv = RandomizedSearchCV(SVR(), param_distributions, n_iter=100, verbose=2, cv=5, random_state=42)
+        # Create the RandomizedSearchCV model
+        rnd_search_cv = RandomizedSearchCV(model, param_distributions, n_iter=1000, verbose=3, cv=5, random_state=42)
+
         rnd_search_cv.fit(X_train, y_train)
 
         print("Best parameters: ", rnd_search_cv.best_params_)
@@ -59,26 +64,21 @@ def supportVectorMachine(df, search):
         y_pred = rnd_search_cv.predict(X_test)
 
         # Evaluate the model using Root Mean Squared Error (RMSE)
-        rmse = mean_squared_error(y_test, y_pred, squared=False)
+        print('Model accuracy score: {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
 
-        print('Root Mean Squared Error: ', rmse)
-        print(y_pred)
     else:
         # Create a Support Vector Regression model
         # We use the Radial basis function (RBF) kernel 
-        model = SVR(kernel='sigmoid', C=7.0642905965958995, epsilon=0.01919705161662965, gamma=0.001595670021065662)
+        model = svm.SVC(kernel='sigmoid', C=3.7882156555691573, gamma=0.008203523727453832)
 
         # Train the model
         model.fit(X_train, y_train)
 
         # Predict the test set results
         y_pred = model.predict(X_test)
-
-        # Evaluate the model using Root Mean Squared Error (RMSE)
-        rmse = mean_squared_error(y_test, y_pred, squared=False)
-
-        print('Root Mean Squared Error: ', rmse)
         print(y_pred)
+        # Evaluate the model using Root Mean Squared Error (RMSE)
+
 
 df = pd.read_csv('compas-scores-recidivism.csv')
 #logRegression(df)
