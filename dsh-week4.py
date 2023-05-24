@@ -3,14 +3,15 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-
+from sklearn.metrics import confusion_matrix, plot_confusion_matrix
+import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
-from sklearn.metrics import accuracy_score, confusion_matrix, plot_confusion_matrix
 from scipy.stats import reciprocal, uniform
+
 
 ''' LOGISTIC REGRESSION '''
 # Load the data
@@ -31,7 +32,6 @@ def logRegression(df):
 
     # Predict the test set results
     y_pred = model.predict(X_test)
-    print(y_pred)    # Evaluate the model
     print('Model accuracy score: {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
 
 
@@ -78,8 +78,14 @@ def supportVectorMachine(df, search):
         y_pred = model.predict(X_test)
         
         print('Model accuracy score: {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
+        cm = confusion_matrix(y_test, y_pred)
+        print("Confusion Matrix: \n", cm)
+
+        # Plot the confusion matrix
+        plot_confusion_matrix(model, X_test, y_test)
+        plt.show()
 
 
 df = pd.read_csv('compas-scores-recidivism.csv')
-#logRegression(df)
+logRegression(df)
 supportVectorMachine(df, False)
