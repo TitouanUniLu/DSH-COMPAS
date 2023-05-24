@@ -12,6 +12,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import reciprocal, uniform
 import numpy as np
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
 
 ''' LOGISTIC REGRESSION '''
@@ -75,6 +76,24 @@ def logRegression(df, search):
         plot_confusion_matrix(model, X_test, y_test)
         plt.show()
 
+        # Calculate precision
+        precision = precision_score(y_test, y_pred)
+
+        # Calculate recall
+        recall = recall_score(y_test, y_pred)
+
+        # Calculate F1 score
+        f1 = f1_score(y_test, y_pred)
+
+        # Calculate accuracy
+        accuracy = accuracy_score(y_test, y_pred)
+
+        print("Precision: ", precision)
+        print("Recall: ", recall)
+        print("F1 Score: ", f1)
+        print("Accuracy: ", accuracy)
+
+
 
 
 def supportVectorMachine(df, search):
@@ -127,6 +146,23 @@ def supportVectorMachine(df, search):
         # Plot the confusion matrix
         plot_confusion_matrix(model, X_test, y_test)
         plt.show()
+
+        # Calculate precision
+        precision = precision_score(y_test, y_pred)
+
+        # Calculate recall
+        recall = recall_score(y_test, y_pred)
+
+        # Calculate F1 score
+        f1 = f1_score(y_test, y_pred)
+
+        # Calculate accuracy
+        accuracy = accuracy_score(y_test, y_pred)
+
+        print("Precision: ", precision)
+        print("Recall: ", recall)
+        print("F1 Score: ", f1)
+        print("Accuracy: ", accuracy)
 
 
 df = pd.read_csv('compas-scores-recidivism.csv')
