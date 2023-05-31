@@ -30,6 +30,18 @@ df = pd.read_csv('compas-raw-final.csv')
 
 # print(df_encoded.head(5))
 
+# Create a dictionary mapping for the ScoreText column
+score_dict = {'Low': 0, 'Medium': 1, 'High': 2}
+
+# Use the replace function to change the values in the ScoreText column
+df['ScoreText'] = df['ScoreText'].replace(score_dict)
+
+# Export the updated DataFrame to a new CSV file
+df.to_csv('compas-raw_data-final.csv', index=False)
+
+# Print the first 5 rows of the DataFrame to check if the values have been replaced correctly
+print(df.head())
+
 # Count the number of rows in the DataFrame
 num_rows = df.shape[0]
 

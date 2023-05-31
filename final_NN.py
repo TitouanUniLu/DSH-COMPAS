@@ -16,12 +16,6 @@ X = data[['RawScore', 'Sex_Code_Text_Female']]
 y = data['Ethnic_Code_Text_African-American']
 # y = data['Sex_Code_Text_Male']
 
-# # Perform one-hot encoding for the 'ScoreText' feature
-# onehot_encoder = OneHotEncoder(sparse=False, drop='first')
-# score_text_encoded = onehot_encoder.fit_transform(data[['ScoreText']])
-# score_text_columns = onehot_encoder.get_feature_names_out(['ScoreText'])
-# X = pd.concat([X, pd.DataFrame(score_text_encoded, columns=score_text_columns)], axis=1)
-
 # Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
