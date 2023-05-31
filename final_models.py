@@ -28,7 +28,7 @@ def logRegression(df, search):
         param_grid = {
             'C': np.logspace(-4, 4, 20),  # creates a range of 20 values evenly spaced on a log scale between 10^-4 and 10^4
             'tol': reciprocal(0.0001, 0.1),
-            'penalty': ['l1', 'l2', 'elasticnet', 'none'],  # 'elasticnet' and 'none' are also valid options
+            'penalty': ['l1', 'l2', 'elasticnet'],  # 'elasticnet' and 'none' are also valid options we decided to opt out of None as it was introducing too many error messages
             'solver': ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'],
             'l1_ratio': np.linspace(0, 1, 10)  # only used when penalty='elasticnet'
         }
@@ -61,7 +61,7 @@ def logRegression(df, search):
 
     else:
         # Create a Logistic Regression model
-        model = LogisticRegression(solver='saga', penalty='l1', C=0.12328467394420634)
+        model = LogisticRegression(solver='liblinear', penalty='l1', C=0.03359818286283781, l1_ratio = 0.3333333333333333, tol = 0.02183096839052459)
 
         # Train the model
         model.fit(X_train, y_train)
@@ -73,7 +73,8 @@ def logRegression(df, search):
         print("Confusion Matrix: \n", cm)
 
         # Plot the confusion matrix
-        ConfusionMatrixDisplay(model, X_test, y_test)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=model.classes_)
+        disp.plot()
         plt.show()
 
         # Calculate precision
@@ -131,7 +132,7 @@ def supportVectorMachine(df, search):
     else:
         # Create a Support Vector Regression model
         # We use the Radial basis function (RBF) kernel 
-        model = svm.SVC(kernel='sigmoid', C=3.7882156555691573, gamma=0.008203523727453832)
+        model = svm.SVC(kernel='sigmoid', C=3.745401188473625, gamma=0.07969454818643928)
 
         # Train the model
         model.fit(X_train, y_train)
@@ -144,7 +145,8 @@ def supportVectorMachine(df, search):
         print("Confusion Matrix: \n", cm)
 
         # Plot the confusion matrix
-        ConfusionMatrixDisplay(model, X_test, y_test)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=model.classes_)
+        disp.plot()
         plt.show()
 
         # Calculate precision
@@ -165,6 +167,6 @@ def supportVectorMachine(df, search):
         print("Accuracy: ", accuracy)
 
 
-df = pd.read_csv('compas-raw-final.csv')
-logRegression(df, True)
-#supportVectorMachine(df, False)
+df = pd.read_csv('compas-raw_data-final.csv')
+#logRegression(df, True)
+supportVectorMachine(df, False)
