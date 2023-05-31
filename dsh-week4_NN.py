@@ -8,7 +8,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 
 # Load the dataset
-data = pd.read_csv('compas-scores-recidivism.csv')  # Replace with the actual path to your dataset file
+data = pd.read_csv('compas-scores-recidivism.csv') 
 
 # Separate features and target variable
 X = data[['RawScore', 'Sex_Code_Text_Female']]
