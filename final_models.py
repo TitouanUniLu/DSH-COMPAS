@@ -3,7 +3,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-from sklearn.metrics import confusion_matrix, plot_confusion_matrix
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn.metrics import mean_squared_error
@@ -73,7 +73,7 @@ def logRegression(df, search):
         print("Confusion Matrix: \n", cm)
 
         # Plot the confusion matrix
-        plot_confusion_matrix(model, X_test, y_test)
+        ConfusionMatrixDisplay(model, X_test, y_test)
         plt.show()
 
         # Calculate precision
@@ -144,7 +144,7 @@ def supportVectorMachine(df, search):
         print("Confusion Matrix: \n", cm)
 
         # Plot the confusion matrix
-        plot_confusion_matrix(model, X_test, y_test)
+        ConfusionMatrixDisplay(model, X_test, y_test)
         plt.show()
 
         # Calculate precision
